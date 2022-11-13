@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Lendable\LendableRector\Rector;
+namespace Tests\Lendable\LendableRector\Rector\Assign\WrapScalarValueIntoDecimalValueObjectRector;
 
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-class FooRectorTest extends AbstractRectorTestCase
+class WrapScalarValueIntoDecimalValueObjectRectorTest extends AbstractRectorTestCase
 {
     /**
      * @dataProvider provideData()
