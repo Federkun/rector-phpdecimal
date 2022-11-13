@@ -2,7 +2,7 @@
 
 use Lendable\Entity\LoanApplication;
 
-class Service
+class WrapAmount
 {
     public function calculate(LoanApplication $loanApplication): void
     {
@@ -14,7 +14,7 @@ class Service
 
 use Lendable\Entity\LoanApplication;
 
-class Service
+class WrapAmount
 {
     public function calculate(LoanApplication $loanApplication): void
     {

@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Lendable\Entity;
 
-use Lendable\ValueObject\MonetaryAmount;
-
 class LoanApplication
 {
     /**
-     * @lendable-param MonetaryAmount
+     * @lendable-param monetary-amount
      */
     private float $amount;
 
@@ -19,11 +17,10 @@ class LoanApplication
     }
 
     /**
-     * @lendable-param MonetaryAmount
+     * @lendable-return monetary-amount
      */
     public function getAmount(): float
     {
         return $this->amount;
     }
-
 }
