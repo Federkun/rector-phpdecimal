@@ -1,0 +1,22 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Lendable\\LendableRector\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Lendable\\LendableRector\\": "tests"
+        },
+        "classmap": [
+            "stubs"
+        ]
+    },
+    "require-dev": {
+        "rector/rector": "^0.14.7",
+        "phpunit/phpunit": "^9.5"
+    },
+    "scripts": {
+        "tests": "phpunit"
+    }
+}
