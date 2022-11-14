@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Lendable\LendableRector\Rector\Assign;
 
-use Lendable\LendableRector\NodeAnalyzer\ReturnTypeAnalyzer;
 use Lendable\ValueObject\MonetaryAmount;
 use PhpParser\Node;
 use Rector\Core\Rector\AbstractRector;
@@ -41,21 +40,28 @@ class PlusOpBetweenDecimalValueObjectRector extends AbstractRector
             return null;
         }
 
-        if (!$this->canReplacePlusOpWithMethodCall($node)) {
+        if (!$this->canBeReplacedWithMethodCall($node)) {
             return null;
         }
 
+        return $this->replaceBinaryOpWithMethodCall($node);
+    }
+
+    private function replaceBinaryOpWithMethodCall(Node\Expr\BinaryOp $node): Node\Expr\MethodCall
+    {
         return new Node\Expr\MethodCall(
-            $node->left,
+            $node->left instanceof Node\Expr\BinaryOp ? $this->replaceBinaryOpWithMethodCall($node->left) : $node->left,
             new Node\Identifier('add'),
-            [
-                new Node\Arg($node->right)
-            ]
+            [new Node\Arg($node->right)]
         );
     }
 
-    private function canReplacePlusOpWithMethodCall(Node\Expr\BinaryOp\Plus $node): bool
+    private function canBeReplacedWithMethodCall(Node\Expr\BinaryOp $node): bool
     {
+        if ($node->left instanceof Node\Expr\BinaryOp) {
+            return $this->canBeReplacedWithMethodCall($node->left);
+        }
+
         $leftType = $this->getType($node->left);
         $rightType = $this->getType($node->right);
 
