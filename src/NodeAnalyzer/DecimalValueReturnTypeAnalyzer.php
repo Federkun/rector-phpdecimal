@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Lendable\LendableRector\NodeAnalyzer;
 
-use Lendable\LendableRector\Dto\DecimalValueMethod;
+use Lendable\LendableRector\Dto\DecimalValueWrapperCall;
 use Lendable\ValueObject\MonetaryAmount;
 use PhpParser\Node;
-use PHPStan\Type\FloatType;
 use PHPStan\Type\Type;
 use Rector\Core\Reflection\ReflectionResolver;
 
-final class ReturnTypeAnalyzer
+final class DecimalValueReturnTypeAnalyzer
 {
     public function __construct(
         private readonly ReflectionResolver $reflectionResolver
@@ -19,7 +18,7 @@ final class ReturnTypeAnalyzer
     }
 
     // @TODO - naive implementation
-    public function findReturnType(Node\Expr\MethodCall $node, Type $assignType): ?DecimalValueMethod
+    public function findDecimalValueWrapperCall(Node\Expr\MethodCall $node, Type $assignType): ?DecimalValueWrapperCall
     {
         $methodReflection = $this->reflectionResolver->resolveMethodReflectionFromMethodCall($node);
         $phpDoc = $methodReflection->getDocComment();
@@ -32,13 +31,15 @@ final class ReturnTypeAnalyzer
             return null;
         }
 
-
         if (\str_contains($phpDoc, 'monetary-amount')) {
-            if (!$assignType instanceof FloatType) {
-                return null;
+            if ($assignType->isFloat()) {
+                return DecimalValueWrapperCall::fromStaticMethod(
+                    MonetaryAmount::class,
+                    'fromFloat'
+                );
             }
 
-            return DecimalValueMethod::fromStaticMethod(MonetaryAmount::class, 'fromFloat');
+            return null;
         }
 
         return null;

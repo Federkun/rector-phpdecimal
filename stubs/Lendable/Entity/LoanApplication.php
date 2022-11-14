@@ -6,9 +6,6 @@ namespace Lendable\Entity;
 
 class LoanApplication
 {
-    /**
-     * @lendable-param monetary-amount
-     */
     private float $amount;
 
     public function setAmount(float $amount)

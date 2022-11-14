@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Lendable\LendableRector\Dto;
 
-final class DecimalValueMethod
+final class DecimalValueWrapperCall
 {
     private function __construct(
         public readonly string $className,

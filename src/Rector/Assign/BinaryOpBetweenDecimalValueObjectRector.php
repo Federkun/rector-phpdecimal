@@ -13,9 +13,6 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 class BinaryOpBetweenDecimalValueObjectRector extends AbstractRector
 {
-    public function __construct(
-    ) {}
-
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
@@ -73,12 +70,12 @@ class BinaryOpBetweenDecimalValueObjectRector extends AbstractRector
             return false;
         }
 
-        return $rightType->getClassName() === MonetaryAmount::class; // @TODO = naive implementation, to replace
+        return $rightType->getClassName() === MonetaryAmount::class; // @TODO - naive implementation, to replace
     }
 
     private function getOperatorMethodName(Node\Expr\BinaryOp $node): string
     {
-        // @TODO = naive implementation, to replace
+        // @TODO - naive implementation, to replace
         if ($node instanceof Node\Expr\BinaryOp\Plus) {
             return 'add';
         }

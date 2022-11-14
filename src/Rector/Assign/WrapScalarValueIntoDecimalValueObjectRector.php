@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Lendable\LendableRector\Rector\Assign;
 
-use Lendable\LendableRector\NodeAnalyzer\ReturnTypeAnalyzer;
+use Lendable\LendableRector\NodeAnalyzer\DecimalValueReturnTypeAnalyzer;
 use Lendable\ValueObject\MonetaryAmount;
 use PhpParser\Node;
 use Rector\Core\Rector\AbstractRector;
@@ -13,7 +13,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 class WrapScalarValueIntoDecimalValueObjectRector extends AbstractRector
 {
     public function __construct(
-        private readonly ReturnTypeAnalyzer $returnTypeAnalyzer,
+        private readonly DecimalValueReturnTypeAnalyzer $returnTypeAnalyzer,
     ) {}
 
     public function getRuleDefinition(): RuleDefinition
@@ -39,7 +39,7 @@ class WrapScalarValueIntoDecimalValueObjectRector extends AbstractRector
 
         $type = $this->getType($node);
 
-        $newMethodCall = $this->returnTypeAnalyzer->findReturnType($methodCall, $type);
+        $newMethodCall = $this->returnTypeAnalyzer->findDecimalValueWrapperCall($methodCall, $type);
 
         if ($newMethodCall === null) {
             return null;
