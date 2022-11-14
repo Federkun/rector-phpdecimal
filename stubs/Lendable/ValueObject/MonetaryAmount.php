@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Lendable\ValueObject;
 
-/**
- * @lendable-type monetary-amount
- */
 class MonetaryAmount
 {
     private function __construct()
@@ -18,9 +15,6 @@ class MonetaryAmount
         return new static();
     }
 
-    /**
-     * @lendable-test monetary-amount
-     */
     public function add(self $amount): static
     {
         return new static();

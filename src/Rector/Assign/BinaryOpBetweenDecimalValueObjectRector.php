@@ -11,7 +11,7 @@ use Rector\NodeTypeResolver\Node\AttributeKey;
 use Rector\StaticTypeMapper\ValueObject\Type\FullyQualifiedObjectType;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-class PlusOpBetweenDecimalValueObjectRector extends AbstractRector
+class BinaryOpBetweenDecimalValueObjectRector extends AbstractRector
 {
     public function __construct(
     ) {}
@@ -19,18 +19,18 @@ class PlusOpBetweenDecimalValueObjectRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Support addition between the appropriate value object',
+            'Support binary operation between the appropriate value object',
             []
         );
     }
 
     public function getNodeTypes(): array
     {
-        return [Node\Expr\BinaryOp\Plus::class];
+        return [Node\Expr\BinaryOp::class];
     }
 
     /**
-     * @param Node\Expr\BinaryOp\Plus $node
+     * @param Node\Expr\BinaryOp $node
      */
     public function refactor(Node $node): ?Node
     {
@@ -51,7 +51,7 @@ class PlusOpBetweenDecimalValueObjectRector extends AbstractRector
     {
         return new Node\Expr\MethodCall(
             $node->left instanceof Node\Expr\BinaryOp ? $this->replaceBinaryOpWithMethodCall($node->left) : $node->left,
-            new Node\Identifier('add'),
+            new Node\Identifier($this->getOperatorMethodName($node)),
             [new Node\Arg($node->right)]
         );
     }
@@ -73,6 +73,20 @@ class PlusOpBetweenDecimalValueObjectRector extends AbstractRector
             return false;
         }
 
-        return $rightType->getClassName() === MonetaryAmount::class; // @TODO - native implementation
+        return $rightType->getClassName() === MonetaryAmount::class; // @TODO = naive implementation, to replace
+    }
+
+    private function getOperatorMethodName(Node\Expr\BinaryOp $node): string
+    {
+        // @TODO = naive implementation, to replace
+        if ($node instanceof Node\Expr\BinaryOp\Plus) {
+            return 'add';
+        }
+
+        if ($node instanceof Node\Expr\BinaryOp\Minus) {
+            return 'subtract';
+        }
+
+        throw new \RuntimeException('Invalid node, expected binary operator');
     }
 }

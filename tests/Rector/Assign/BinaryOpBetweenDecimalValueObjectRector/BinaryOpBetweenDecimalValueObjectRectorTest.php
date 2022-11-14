@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Lendable\LendableRector\Rector\Assign\PlusOpBetweenDecimalValueObjectRector;
+namespace Tests\Lendable\LendableRector\Rector\Assign\BinaryOpBetweenDecimalValueObjectRector;
 
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-class PlusOpBetweenDecimalValueObjectRectorTest extends AbstractRectorTestCase
+class BinaryOpBetweenDecimalValueObjectRectorTest extends AbstractRectorTestCase
 {
     /**
      * @dataProvider provideData()

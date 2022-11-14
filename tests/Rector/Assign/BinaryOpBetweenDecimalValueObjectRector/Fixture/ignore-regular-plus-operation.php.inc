@@ -2,7 +2,7 @@
 
 use Lendable\Entity\Thermometer;
 
-class IgnoreResularPlusOperation
+class IgnoreRegularPlusOperation
 {
     public function calculate(Thermometer $primary, Thermometer $secondary): void
     {
