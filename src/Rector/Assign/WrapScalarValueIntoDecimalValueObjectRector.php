@@ -35,7 +35,9 @@ class WrapScalarValueIntoDecimalValueObjectRector extends AbstractRector
     public function refactor(Node $node): ?Node
     {
         $methodCall = $node->expr;
-        \assert($methodCall instanceof Node\Expr\MethodCall);
+        if (!$methodCall instanceof Node\Expr\MethodCall) {
+            return null;
+        }
 
         $type = $this->getType($node);
 
@@ -46,14 +48,17 @@ class WrapScalarValueIntoDecimalValueObjectRector extends AbstractRector
         }
 
         if ($newMethodCall->isStatic) {
-            $node->expr = new Node\Expr\StaticCall(
-                new Node\Name\FullyQualified($newMethodCall->className),
-                new Node\Identifier($newMethodCall->methodName),
-                [
-                    new Node\Arg(
-                        $node->expr
-                    )
-                ]
+            return new Node\Expr\Assign(
+                $node->var,
+                new Node\Expr\StaticCall(
+                    new Node\Name\FullyQualified($newMethodCall->className),
+                    new Node\Identifier($newMethodCall->methodName),
+                    [
+                        new Node\Arg(
+                            $node->expr
+                        )
+                    ]
+                )
             );
         }
 
